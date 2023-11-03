@@ -61,7 +61,7 @@ def java_tools_repos():
     maybe(
         http_archive,
         name = "remote_java_tools_darwin_arm64",
-        sha256 = "1ecd91bf870b4f246960c11445218798113b766762e26a3de09cfcf3e9b4c646",
+        sha256 = "dab5bb87ec43e980faea6e1cec14bafb217b8e2f5346f53aa784fd715929a930",
         urls = [
             "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools-v13.1-rc1.zip",
         ],
