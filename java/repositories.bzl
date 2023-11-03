@@ -20,52 +20,44 @@ load("//toolchains:jdk_build_file.bzl", "JDK_BUILD_TEMPLATE")
 load("//toolchains:local_java_repository.bzl", "local_java_repository")
 load("//toolchains:remote_java_repository.bzl", "remote_java_repository")
 
+_JAVA_TOOLS_CONFIG = {
+  "version": "v13.1",
+  "release": "false",
+  "artifacts": {
+    "java_tools_linux": {
+      "mirror_url": "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools_linux-v13.1-rc1.zip",
+      "sha": "d134da9b04c9023fb6e56a5d4bffccee73f7bc9572ddc4e747778dacccd7a5a7"
+    },
+    "java_tools_windows": {
+      "mirror_url": "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools_windows-v13.1-rc1.zip",
+      "sha": "c5c70c214a350f12cbf52da8270fa43ba629b795f3dd328028a38f8f0d39c2a1"
+    },
+    "java_tools_darwin_x86_64": {
+      "mirror_url": "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools_darwin_x86_64-v13.1-rc1.zip",
+      "sha": "0db40d8505a2b65ef0ed46e4256757807db8162f7acff16225be57c1d5726dbc"
+    },
+    "java_tools_darwin_arm64": {
+      "mirror_url": "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools_darwin_arm64-v13.1-rc1.zip",
+      "sha": "dab5bb87ec43e980faea6e1cec14bafb217b8e2f5346f53aa784fd715929a930"
+    },
+    "java_tools": {
+      "mirror_url": "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools-v13.1-rc1.zip",
+      "sha": "286bdbbd66e616fc4ed3f90101418729a73baa7e8c23a98ffbef558f74c0ad14"
+    }
+  }
+}
+
 def java_tools_repos():
     """ Declares the remote java_tools repositories """
-    maybe(
-        http_archive,
-        name = "remote_java_tools",
-        sha256 = "286bdbbd66e616fc4ed3f90101418729a73baa7e8c23a98ffbef558f74c0ad14",
-        urls = [
-            "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools-v13.1-rc1.zip",
-        ],
-    )
-
-    maybe(
-        http_archive,
-        name = "remote_java_tools_linux",
-        sha256 = "d134da9b04c9023fb6e56a5d4bffccee73f7bc9572ddc4e747778dacccd7a5a7",
-        urls = [
-            "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools_linux-v13.1-rc1.zip",
-        ],
-    )
-
-    maybe(
-        http_archive,
-        name = "remote_java_tools_windows",
-        sha256 = "c5c70c214a350f12cbf52da8270fa43ba629b795f3dd328028a38f8f0d39c2a1",
-        urls = [
-            "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools_windows-v13.1-rc1.zip",
-        ],
-    )
-
-    maybe(
-        http_archive,
-        name = "remote_java_tools_darwin_x86_64",
-        sha256 = "286bdbbd66e616fc4ed3f90101418729a73baa7e8c23a98ffbef558f74c0ad14",
-        urls = [
-            "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools_darwin_x86_64-v13.1-rc1.zip",
-        ],
-    )
-
-    maybe(
-        http_archive,
-        name = "remote_java_tools_darwin_arm64",
-        sha256 = "dab5bb87ec43e980faea6e1cec14bafb217b8e2f5346f53aa784fd715929a930",
-        urls = [
-            "https://mirror.bazel.build/bazel_java_tools/release_candidates/java/v13.1/java_tools-v13.1-rc1.zip",
-        ],
-    )
+    for name, config in _JAVA_TOOLS_CONFIG["artifacts"].items():
+        maybe(
+            http_archive,
+            name = "remote_" + name,
+            sha256 = config["sha"],
+            urls = [
+                config["mirror_url"],
+            ],
+        )
 
 def local_jdk_repo():
     maybe(
